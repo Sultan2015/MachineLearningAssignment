@@ -1,0 +1,178 @@
+---
+title: "Machine Learning Course Project"
+author: "Dmytro Goriunov"
+date: "Wednesday, May 20, 2015"
+output: html_document
+---
+
+The goal of this course project is to predict the manner in which people did the dumbbell lifting exercise based on measurements made by wearable sensors. There are five possible options - normal execution and four types of incorrect execution (throwing the elbows to the front, lifting the dumbbell only halfway, lowering the dumbbell only halfway and throwing the hips to the front).
+
+First, we need to load livraries, download and read the data.
+
+```{r eval=FALSE}
+library(caret)
+
+download.file("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv", "pml-training.csv")
+download.file("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv", "pml-testing.csv")
+
+pml_train <-read.csv("pml-training.csv")
+pml_test <- read.csv("pml-testing.csv")
+```
+
+Data processing
+===============
+
+If we look at the data, we can see that there are 100 variables that have meaningful values (not NA) only for new windows. Since they represent only small fractions of the training dataset, and they are NA in the testing dataset, we don't need them.
+
+```{r eval=FALSE}
+features <- names(pml_train_nw)
+
+match1 <- grep("kurtosis_", features)
+match2 <- grep("skewness_", features)
+match3 <- grep("max_", features)
+match4 <- grep("min_", features)
+match5 <- grep("amplitude_", features)
+match6 <- grep("var_", features)
+match7 <- grep("avg_", features)
+match8 <- grep("stddev_", features)
+
+drop <- c(match1, match2, match3, match4, match5, match6, match7, match8)
+pml_train_new <- <- pml_train[, -drop]
+```
+
+Now we should undergo standard partitioning procedures, in order to make cross validation after the training and compare in-sample and out-of-sample errors. In addition, I dropped X that is a mere observation identifier.
+
+```{r eval=FALSE}
+set.seed(98765)
+in_train <- createDataPartition(y=pml_train_new$classe, p=0.75, list=FALSE)
+train <- pml_train_new[in_train, ]
+test <- pml_train_new[-inTrain, ]
+
+train_cut <- train[, -1]
+test_cut <- test[, -1]
+```
+
+No additional preprocessing as scaling, box-cox transformation etc was needed, since the model performed exceptionally good anyway.
+
+Training
+========
+
+First, I tried usual decision tree (CART).
+
+```{r eval=FALSE}
+fit_rpart <- train(classe~., data=train_cut, method="rpart")
+```
+
+However, it's accuracy was not very high
+
+```{r}
+fit_rpart
+```
+
+If we look at confusion matrices, we can see a lot of errors. Moreover, the method does not identify class "D" at all.
+
+```{r}
+rpart_train <- predict(fit_rpart, newdata=train_cut)
+rpart_test <- predict(fit_rpart, newdata=test_cut)
+
+table(rpart_train, train_cut$classe)
+table(rpart_test, test_cut$classe)
+
+```
+
+If one tree is not enough, let's plant a forest then.
+
+```{r eval=FALSE}
+fit_rf <- train(classe~., data=train_cut, method="rf")
+```
+
+One can see that the accuracy is very high.
+
+```{r}
+fit_rf
+```
+
+It is even higher if we look at confusion matrices. There are no errors at all, for both training and testing datasets. 
+
+```{r}
+rf_train <- predict(fit_rf, newdata=train_cut)
+rf_test <- predict(fit_rf, newdata=test_cut)
+
+table(rf_train, train_cut$classe)
+table(rf_test, test_cut$classe)
+```
+
+Interpretation
+==============
+
+This 100% accuracy looks suspicious. Let's see which features are the most important.
+
+```{r}
+library(caret)
+varImp(fit_rf)
+```
+
+My guess is that timestamp variable is a cheat, since it serves as an identifier like the X variable that I dropped. We could try to check this with plots. Initial general plot does not proof anything.
+
+```{r}
+plot(train_cut$raw_timestamp_part_1, train_cut$classe, col=train_cut$user)
+```
+
+However, after some fine tuning of horizontal axis scale, we can see that it is really the case. (Below you can see only one range, but other ranges look exactly like this one).
+
+```{r}
+# par(mfrow=c(2,2))
+plot(train_cut$raw_timestamp_part_1, train_cut$classe, xlim=c(1322489600,1322489730), col=train_cut$user)
+# plot(train_cut$raw_timestamp_part_1, train_cut$classe, xlim=c(1322673020,1322673170))
+# plot(train_cut$raw_timestamp_part_1, train_cut$classe, xlim=c(1322832770,1322832950))
+```
+
+Obviously, each person made each exercise consequently, which makes the task just pure learning exercise (with the only question left, why decision tree performed so poorly). In case of real life problem, we will deal only with measurements.
+
+Pure calculation
+================
+
+Let's check how our models perform if we drop all time stamps and other variables that can easily identify sequence (like window numbers). Let's even drop user identification.
+
+```{r eval=FALSE}
+train_pure <-train_cut[, -(1:6)]
+set.seed(34567)
+fit_pure <- train(classe~., data=train_pure, method="rf")
+```
+
+Accuracy is still very good.
+
+```{r}
+# fit_pure
+```
+
+However, there some out-of-sample errors, but error rate is very small. In fact, only 18 observations (out of 19371) very classified incorrectly.
+
+```{r eval=FALSE}
+pure_train <- predict(fit_pure, newdata=train_cut)
+pure_test <- predict(fit_pure, newdata=test_cut)
+```
+
+
+```{r}
+table(pure_train, train_cut$classe)
+table(pure_test, test_cut$classe)
+```
+
+Finally, let's look at variable importance.
+
+```{r}
+varImp(fit_pure)
+```
+
+Let's check the top feature like we did last time with time stamp.
+
+```{r}
+plot(train_pure$roll_belt, train_pure$classe, col=train_cut$user)
+```
+
+Here we see not obvious relationship. Moreover, importance is rather high for some other variables too, which means that here the model indeed classifies exercise execution on the basis of different measurements made by sensors.
+
+Rereferences
+============
+Ugulino, W.; Cardador, D.; Vega, K.; Velloso, E.; Milidiu, R.; Fuks, H. Wearable Computing: Accelerometers' Data Classification of Body Postures and Movements. Proceedings of 21st Brazilian Symposium on Artificial Intelligence. Advances in Artificial Intelligence - SBIA 2012. In: Lecture Notes in Computer Science. , pp. 52-61. Curitiba, PR: Springer Berlin / Heidelberg, 2012. ISBN 978-3-642-34458-9. DOI: 10.1007/978-3-642-34459-6_6.
