@@ -5,6 +5,9 @@ date: "Wednesday, May 20, 2015"
 output: html_document
 ---
 
+Machine Learning Course Project
+===============================
+
 The goal of this course project is to predict the manner in which people did the dumbbell lifting exercise based on measurements made by wearable sensors. There are five possible options - normal execution and four types of incorrect execution (throwing the elbows to the front, lifting the dumbbell only halfway, lowering the dumbbell only halfway and throwing the hips to the front).
 
 First, we need to load livraries, download and read the data.
@@ -61,11 +64,13 @@ First, I tried usual decision tree (CART).
 
 ```{r eval=FALSE}
 fit_rpart <- train(classe~., data=train_cut, method="rpart")
+save(fit_rpart, file="fit_rpart.Rdata")
 ```
 
 However, it's accuracy was not very high
 
 ```{r}
+load(file="fit_rpart.Rdata")
 fit_rpart
 ```
 
@@ -84,11 +89,13 @@ If one tree is not enough, let's plant a forest then.
 
 ```{r eval=FALSE}
 fit_rf <- train(classe~., data=train_cut, method="rf")
+save(fit_rf, file="fit_rf.Rdata")
 ```
 
 One can see that the accuracy is very high.
 
 ```{r}
+load(file="fit_rf.Rdata")
 fit_rf
 ```
 
@@ -121,10 +128,7 @@ plot(train_cut$raw_timestamp_part_1, train_cut$classe, col=train_cut$user)
 However, after some fine tuning of horizontal axis scale, we can see that it is really the case. (Below you can see only one range, but other ranges look exactly like this one).
 
 ```{r}
-# par(mfrow=c(2,2))
 plot(train_cut$raw_timestamp_part_1, train_cut$classe, xlim=c(1322489600,1322489730), col=train_cut$user)
-# plot(train_cut$raw_timestamp_part_1, train_cut$classe, xlim=c(1322673020,1322673170))
-# plot(train_cut$raw_timestamp_part_1, train_cut$classe, xlim=c(1322832770,1322832950))
 ```
 
 Obviously, each person made each exercise consequently, which makes the task just pure learning exercise (with the only question left, why decision tree performed so poorly). In case of real life problem, we will deal only with measurements.
@@ -138,12 +142,14 @@ Let's check how our models perform if we drop all time stamps and other variable
 train_pure <-train_cut[, -(1:6)]
 set.seed(34567)
 fit_pure <- train(classe~., data=train_pure, method="rf")
+save(fit_pure, file="fit_pure.Rdata")
 ```
 
 Accuracy is still very good.
 
 ```{r}
-# fit_pure
+load(file="fit_pure.Rdata")
+fit_pure
 ```
 
 However, there some out-of-sample errors, but error rate is very small. In fact, only 18 observations (out of 19371) very classified incorrectly.
@@ -151,10 +157,7 @@ However, there some out-of-sample errors, but error rate is very small. In fact,
 ```{r eval=FALSE}
 pure_train <- predict(fit_pure, newdata=train_cut)
 pure_test <- predict(fit_pure, newdata=test_cut)
-```
 
-
-```{r}
 table(pure_train, train_cut$classe)
 table(pure_test, test_cut$classe)
 ```
