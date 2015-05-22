@@ -76,18 +76,6 @@ However, it's accuracy was not very high
 
 ```r
 load(file="fit_rpart.Rdata")
-```
-
-```
-## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
-## 'fit_rpart.Rdata', probable reason 'No such file or directory'
-```
-
-```
-## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection
-```
-
-```r
 fit_rpart
 ```
 
@@ -161,18 +149,6 @@ One can see that the accuracy is very high.
 
 ```r
 load(file="fit_rf.Rdata")
-```
-
-```
-## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
-## 'fit_rf.Rdata', probable reason 'No such file or directory'
-```
-
-```
-## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection
-```
-
-```r
 fit_rf
 ```
 
@@ -310,18 +286,6 @@ Accuracy is still very good.
 
 ```r
 load(file="fit_pure.Rdata")
-```
-
-```
-## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
-## 'fit_pure.Rdata', probable reason 'No such file or directory'
-```
-
-```
-## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection
-```
-
-```r
 fit_pure
 ```
 
