@@ -492,13 +492,33 @@ save(fit_pure, file=&quot;fit_pure.Rdata&quot;)
 ## The final value used for the model was mtry = 2.
 </code></pre>
 
-<p>However, there some out-of-sample errors, but error rate is very small. In fact, only 18 observations (out of 19371) very classified incorrectly.</p>
+<p>However, there some out-of-sample errors, but error rate is very small. In fact, only a few observations (out of 19371) very classified incorrectly.</p>
 
 <pre><code class="r">pure_train &lt;- predict(fit_pure, newdata=train_cut)
 pure_test &lt;- predict(fit_pure, newdata=test_cut)
 
 table(pure_train, train_cut$classe)
-table(pure_test, test_cut$classe)
+</code></pre>
+
+<pre><code>##           
+## pure_train    A    B    C    D    E
+##          A 4185    0    0    0    0
+##          B    0 2848    0    0    0
+##          C    0    0 2567    0    0
+##          D    0    0    0 2412    0
+##          E    0    0    0    0 2706
+</code></pre>
+
+<pre><code class="r">table(pure_test, test_cut$classe)
+</code></pre>
+
+<pre><code>##          
+## pure_test    A    B    C    D    E
+##         A 5329    7    0    0    0
+##         B    0 3790    5    0    0
+##         C    0    0 3416   15    0
+##         D    0    0    1 3200    1
+##         E    0    0    0    1 3606
 </code></pre>
 
 <p>Finally, let&#39;s look at variable importance.</p>

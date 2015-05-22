@@ -152,9 +152,9 @@ load(file="fit_pure.Rdata")
 fit_pure
 ```
 
-However, there some out-of-sample errors, but error rate is very small. In fact, only 18 observations (out of 19371) very classified incorrectly.
+However, there some out-of-sample errors, but error rate is very small. In fact, only a few observations (out of 19371) very classified incorrectly.
 
-```{r eval=FALSE}
+```{r}
 pure_train <- predict(fit_pure, newdata=train_cut)
 pure_test <- predict(fit_pure, newdata=test_cut)
 

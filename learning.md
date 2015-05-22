@@ -348,7 +348,7 @@ fit_pure
 ## The final value used for the model was mtry = 2.
 ```
 
-However, there some out-of-sample errors, but error rate is very small. In fact, only 18 observations (out of 19371) very classified incorrectly.
+However, there some out-of-sample errors, but error rate is very small. In fact, only a few observations (out of 19371) very classified incorrectly.
 
 
 ```r
@@ -356,7 +356,30 @@ pure_train <- predict(fit_pure, newdata=train_cut)
 pure_test <- predict(fit_pure, newdata=test_cut)
 
 table(pure_train, train_cut$classe)
+```
+
+```
+##           
+## pure_train    A    B    C    D    E
+##          A 4185    0    0    0    0
+##          B    0 2848    0    0    0
+##          C    0    0 2567    0    0
+##          D    0    0    0 2412    0
+##          E    0    0    0    0 2706
+```
+
+```r
 table(pure_test, test_cut$classe)
+```
+
+```
+##          
+## pure_test    A    B    C    D    E
+##         A 5329    7    0    0    0
+##         B    0 3790    5    0    0
+##         C    0    0 3416   15    0
+##         D    0    0    1 3200    1
+##         E    0    0    0    1 3606
 ```
 
 Finally, let's look at variable importance.
