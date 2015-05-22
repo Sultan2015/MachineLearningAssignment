@@ -199,7 +199,7 @@ fit_rf
 ## The final value used for the model was mtry = 41.
 ```
 
-It is even higher if we look at confusion matrices. There are no errors at all, for both training and testing datasets. 
+It is even higher if we look at confusion matrices. There are almost no errors, no for training dataset and only one for testing dataset. 
 
 
 ```r
@@ -236,7 +236,7 @@ table(rf_test, test_cut$classe)
 Interpretation
 ==============
 
-This 100% accuracy looks suspicious. Let's see which features are the most important.
+This almost 100% accuracy looks suspicious. Let's see which features are the most important.
 
 
 ```r
@@ -377,8 +377,8 @@ table(pure_test, test_cut$classe)
 ## pure_test    A    B    C    D    E
 ##         A 5329    7    0    0    0
 ##         B    0 3790    5    0    0
-##         C    0    0 3416   15    0
-##         D    0    0    1 3200    1
+##         C    0    0 3416   14    0
+##         D    0    0    1 3201    1
 ##         E    0    0    0    1 3606
 ```
 

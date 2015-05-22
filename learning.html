@@ -365,7 +365,7 @@ save(fit_rf, file=&quot;fit_rf.Rdata&quot;)
 ## The final value used for the model was mtry = 41.
 </code></pre>
 
-<p>It is even higher if we look at confusion matrices. There are no errors at all, for both training and testing datasets. </p>
+<p>It is even higher if we look at confusion matrices. There are almost no errors, no for training dataset and only one for testing dataset. </p>
 
 <pre><code class="r">rf_train &lt;- predict(fit_rf, newdata=train_cut)
 rf_test &lt;- predict(fit_rf, newdata=test_cut)
@@ -396,7 +396,7 @@ table(rf_train, train_cut$classe)
 
 <h1>Interpretation</h1>
 
-<p>This 100% accuracy looks suspicious. Let&#39;s see which features are the most important.</p>
+<p>This almost 100% accuracy looks suspicious. Let&#39;s see which features are the most important.</p>
 
 <pre><code class="r">library(caret)
 varImp(fit_rf)
@@ -516,8 +516,8 @@ table(pure_train, train_cut$classe)
 ## pure_test    A    B    C    D    E
 ##         A 5329    7    0    0    0
 ##         B    0 3790    5    0    0
-##         C    0    0 3416   15    0
-##         D    0    0    1 3200    1
+##         C    0    0 3416   14    0
+##         D    0    0    1 3201    1
 ##         E    0    0    0    1 3606
 </code></pre>
 

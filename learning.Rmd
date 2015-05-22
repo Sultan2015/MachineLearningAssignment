@@ -99,7 +99,7 @@ load(file="fit_rf.Rdata")
 fit_rf
 ```
 
-It is even higher if we look at confusion matrices. There are no errors at all, for both training and testing datasets. 
+It is even higher if we look at confusion matrices. There are almost no errors, no for training dataset and only one for testing dataset. 
 
 ```{r}
 rf_train <- predict(fit_rf, newdata=train_cut)
@@ -112,7 +112,7 @@ table(rf_test, test_cut$classe)
 Interpretation
 ==============
 
-This 100% accuracy looks suspicious. Let's see which features are the most important.
+This almost 100% accuracy looks suspicious. Let's see which features are the most important.
 
 ```{r}
 library(caret)
