@@ -10,7 +10,7 @@ Machine Learning Course Project
 
 The goal of this course project is to predict the manner in which people did the dumbbell lifting exercise based on measurements made by wearable sensors. There are five possible options - normal execution and four types of incorrect execution (throwing the elbows to the front, lifting the dumbbell only halfway, lowering the dumbbell only halfway and throwing the hips to the front).
 
-First, we need to load livraries, download and read the data.
+First, we need to load libraries, download and read the data.
 
 ```{r eval=FALSE}
 library(caret)
