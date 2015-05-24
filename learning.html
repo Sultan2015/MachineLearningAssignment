@@ -205,7 +205,7 @@ hr {
 
 <p>The goal of this course project is to predict the manner in which people did the dumbbell lifting exercise based on measurements made by wearable sensors. There are five possible options - normal execution and four types of incorrect execution (throwing the elbows to the front, lifting the dumbbell only halfway, lowering the dumbbell only halfway and throwing the hips to the front).</p>
 
-<p>First, we need to load livraries, download and read the data.</p>
+<p>First, we need to load libraries, download and read the data.</p>
 
 <pre><code class="r">library(caret)
 
@@ -287,7 +287,12 @@ fit_rpart
 <p>If we look at confusion matrices, we can see a lot of errors. Moreover, the method does not identify class &ldquo;D&rdquo; at all.</p>
 
 <pre><code class="r">rpart_train &lt;- predict(fit_rpart, newdata=train_cut)
-rpart_test &lt;- predict(fit_rpart, newdata=test_cut)
+</code></pre>
+
+<pre><code>## Loading required package: rpart
+</code></pre>
+
+<pre><code class="r">rpart_test &lt;- predict(fit_rpart, newdata=test_cut)
 
 table(rpart_train, train_cut$classe)
 </code></pre>
@@ -350,7 +355,14 @@ fit_rf
 <p>It is even higher if we look at confusion matrices. There are almost no errors, no for training dataset and only one for testing dataset. </p>
 
 <pre><code class="r">rf_train &lt;- predict(fit_rf, newdata=train_cut)
-rf_test &lt;- predict(fit_rf, newdata=test_cut)
+</code></pre>
+
+<pre><code>## Loading required package: randomForest
+## randomForest 4.6-10
+## Type rfNews() to see new features/changes/bug fixes.
+</code></pre>
+
+<pre><code class="r">rf_test &lt;- predict(fit_rf, newdata=test_cut)
 
 table(rf_train, train_cut$classe)
 </code></pre>
@@ -381,7 +393,13 @@ table(rf_train, train_cut$classe)
 <p>This almost 100% accuracy looks suspicious. Let&#39;s see which features are the most important.</p>
 
 <pre><code class="r">library(caret)
-varImp(fit_rf)
+</code></pre>
+
+<pre><code>## Loading required package: lattice
+## Loading required package: ggplot2
+</code></pre>
+
+<pre><code class="r">varImp(fit_rf)
 </code></pre>
 
 <pre><code>## rf variable importance

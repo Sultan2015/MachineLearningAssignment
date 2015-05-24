@@ -10,7 +10,7 @@ Machine Learning Course Project
 
 The goal of this course project is to predict the manner in which people did the dumbbell lifting exercise based on measurements made by wearable sensors. There are five possible options - normal execution and four types of incorrect execution (throwing the elbows to the front, lifting the dumbbell only halfway, lowering the dumbbell only halfway and throwing the hips to the front).
 
-First, we need to load livraries, download and read the data.
+First, we need to load libraries, download and read the data.
 
 
 ```r
@@ -107,6 +107,13 @@ If we look at confusion matrices, we can see a lot of errors. Moreover, the meth
 
 ```r
 rpart_train <- predict(fit_rpart, newdata=train_cut)
+```
+
+```
+## Loading required package: rpart
+```
+
+```r
 rpart_test <- predict(fit_rpart, newdata=test_cut)
 
 table(rpart_train, train_cut$classe)
@@ -180,6 +187,15 @@ It is even higher if we look at confusion matrices. There are almost no errors, 
 
 ```r
 rf_train <- predict(fit_rf, newdata=train_cut)
+```
+
+```
+## Loading required package: randomForest
+## randomForest 4.6-10
+## Type rfNews() to see new features/changes/bug fixes.
+```
+
+```r
 rf_test <- predict(fit_rf, newdata=test_cut)
 
 table(rf_train, train_cut$classe)
@@ -217,6 +233,14 @@ This almost 100% accuracy looks suspicious. Let's see which features are the mos
 
 ```r
 library(caret)
+```
+
+```
+## Loading required package: lattice
+## Loading required package: ggplot2
+```
+
+```r
 varImp(fit_rf)
 ```
 
@@ -255,7 +279,7 @@ My guess is that timestamp variable is a cheat, since it serves as an identifier
 plot(train_cut$raw_timestamp_part_1, train_cut$classe, col=train_cut$user)
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
+![plot of chunk unnamed-chunk-11](assets/fig/unnamed-chunk-11-1.png) 
 
 However, after some fine tuning of horizontal axis scale, we can see that it is really the case. (Below you can see only one range, but other ranges look exactly like this one).
 
@@ -264,7 +288,7 @@ However, after some fine tuning of horizontal axis scale, we can see that it is 
 plot(train_cut$raw_timestamp_part_1, train_cut$classe, xlim=c(1322489600,1322489730), col=train_cut$user)
 ```
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
+![plot of chunk unnamed-chunk-12](assets/fig/unnamed-chunk-12-1.png) 
 
 Obviously, each person made each exercise consequently, which makes the task just pure learning exercise (with the only question left, why decision tree performed so poorly). In case of real life problem, we will deal only with measurements.
 
@@ -388,7 +412,7 @@ Let's check the top feature like we did last time with time stamp.
 plot(train_pure$roll_belt, train_pure$classe, col=train_cut$user)
 ```
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png) 
+![plot of chunk unnamed-chunk-17](assets/fig/unnamed-chunk-17-1.png) 
 
 Here we see not obvious relationship. Moreover, importance is rather high for some other variables too, which means that here the model indeed classifies exercise execution on the basis of different measurements made by sensors.
 
