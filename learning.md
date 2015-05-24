@@ -414,7 +414,7 @@ plot(train_pure$roll_belt, train_pure$classe, col=train_cut$user)
 
 ![plot of chunk unnamed-chunk-17](assets/fig/unnamed-chunk-17-1.png) 
 
-Here we see not obvious relationship. Moreover, importance is rather high for some other variables too, which means that here the model indeed classifies exercise execution on the basis of different measurements made by sensors.
+Here we see no obvious relationship. Moreover, importance is rather high for some other variables too, which means that here the model indeed classifies exercise execution on the basis of different measurements made by sensors.
 
 Rereferences
 ============

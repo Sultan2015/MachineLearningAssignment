@@ -174,7 +174,7 @@ Let's check the top feature like we did last time with time stamp.
 plot(train_pure$roll_belt, train_pure$classe, col=train_cut$user)
 ```
 
-Here we see not obvious relationship. Moreover, importance is rather high for some other variables too, which means that here the model indeed classifies exercise execution on the basis of different measurements made by sensors.
+Here we see no obvious relationship. Moreover, importance is rather high for some other variables too, which means that here the model indeed classifies exercise execution on the basis of different measurements made by sensors.
 
 Rereferences
 ============
