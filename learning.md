@@ -102,7 +102,7 @@ fit_rpart
 ## The final value used for the model was cp = 0.03996962.
 ```
 
-If we look at confusion matrices, we can see a lot of errors. Moreover, the method does not identify class "D" at all.
+If we look at confusion matrices, we can see a lot of errors, both in-sample and out-of-sample. Moreover, the method does not identify class "D" at all.
 
 
 ```r
@@ -182,7 +182,7 @@ fit_rf
 ## The final value used for the model was mtry = 41.
 ```
 
-It is even higher if we look at confusion matrices. There are almost no errors, no for training dataset and only one for testing dataset. 
+It is even higher if we look at confusion matrices. There are almost no errors, no for training dataset (in-sample) and only one for testing dataset (out-of-sample). 
 
 
 ```r

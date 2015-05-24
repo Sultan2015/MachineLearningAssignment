@@ -284,7 +284,7 @@ fit_rpart
 ## The final value used for the model was cp = 0.03996962.
 </code></pre>
 
-<p>If we look at confusion matrices, we can see a lot of errors. Moreover, the method does not identify class &ldquo;D&rdquo; at all.</p>
+<p>If we look at confusion matrices, we can see a lot of errors, both in-sample and out-of-sample. Moreover, the method does not identify class &ldquo;D&rdquo; at all.</p>
 
 <pre><code class="r">rpart_train &lt;- predict(fit_rpart, newdata=train_cut)
 </code></pre>
@@ -352,7 +352,7 @@ fit_rf
 ## The final value used for the model was mtry = 41.
 </code></pre>
 
-<p>It is even higher if we look at confusion matrices. There are almost no errors, no for training dataset and only one for testing dataset. </p>
+<p>It is even higher if we look at confusion matrices. There are almost no errors, no for training dataset (in-sample) and only one for testing dataset (out-of-sample). </p>
 
 <pre><code class="r">rf_train &lt;- predict(fit_rf, newdata=train_cut)
 </code></pre>
